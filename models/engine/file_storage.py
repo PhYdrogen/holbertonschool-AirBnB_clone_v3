@@ -71,7 +71,10 @@ class FileStorage:
 
     def get(self, cls, id):
         """ id to get, cls the class """
-        return(self.__objects[f"{cls.__name__}.{id}"])
+        try:
+            return(self.__objects[f"{cls.__name__}.{id}"])
+        except:
+            print("None")
 
     def count(self, cls=None):
         """ Returns the number of objects in storage matching the given class. """
