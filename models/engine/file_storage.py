@@ -79,7 +79,7 @@ class FileStorage:
         if cls is None:
             return len(self.__objects) # return number of all objects
         else:
-            for v in self.__objects.values():
-                if isinstance(v, cls):
+            for value in self.__objects.values():
+                if isinstance(value, cls):
                     Count_state += 1
             return Count_state # return the number of State objects
