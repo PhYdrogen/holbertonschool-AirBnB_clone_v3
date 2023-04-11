@@ -79,7 +79,12 @@ class DBStorage:
         """ id to get, cls the class """
         list_obj = self.all(cls)
         name = cls.__name__
-        return (list_obj[f"{name}.{id}"])
+        try:
+            ret = list_obj[f"{name}.{id}"]
+            if ret:
+                return (ret)
+        except KeyError:
+            return(None)
 
     def count(self, cls=None):
         """ Returns the number of objects in storage matching the given class. """
