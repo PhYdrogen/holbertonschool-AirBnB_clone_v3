@@ -3,6 +3,7 @@
 from flask import Flask
 from models import storage
 from api.v1.views import app_views
+from flask import jsonify
 import os
 
 
@@ -13,6 +14,12 @@ app.register_blueprint(app_views)
 @app.teardown_appcontext
 def app_teardown(err):
     storage.close()
+
+
+@app.errorhandler(404)
+@app.errorhandler(405)
+def _handle_api_error(ex):
+    return jsonify({"error": "Not found"})
 
 
 if __name__ == "__main__":
