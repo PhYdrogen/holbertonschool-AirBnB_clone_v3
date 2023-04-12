@@ -16,5 +16,5 @@ def app_teardown():
 if __name__ == "__main__":
     host = os.getenv('HBNB_API_HOST') #HBNB_API_HOST
     port = os.getenv('HBNB_API_PORT') #HBNB_API_PORT
-    app.run(debug=True, port=port)
+    app.run(debug=True, port=port) #apprun
     threaded=True
