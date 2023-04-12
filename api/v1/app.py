@@ -19,10 +19,10 @@ def app_teardown(err):
 @app.errorhandler(404)
 @app.errorhandler(405)
 def _handle_api_error(ex):
-    return jsonify({"error": "Not found"})
+    return jsonify({"error": "Not found"}), ex.code
 
 
 if __name__ == "__main__":
     host = os.environ.get("HBNB_API_HOST", "0.0.0.0")
     port = int(os.environ.get("HBNB_API_PORT", 5050))
-    app.run(debug=True, host=host, port=port, threaded=True)
+    app.run(host=host, port=port, threaded=True)
