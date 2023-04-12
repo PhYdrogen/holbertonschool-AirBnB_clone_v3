@@ -3,6 +3,7 @@
 from flask import Flask
 from models import storage
 from api.v1.views import app_views
+import os
 
 
 app = Flask(__name__)
@@ -13,6 +14,7 @@ def app_teardown():
     storage.close()
 
 if __name__ == "__main__":
-    host = "0.0.0.0" #HBNB_API_HOST
-    port = 5000 #HBNB_API_PORT
+    host = os.getenv('HBNB_API_HOST') #HBNB_API_HOST
+    port = os.getenv('HBNB_API_PORT') #HBNB_API_PORT
+    app.run(debug=True, port=port)
     threaded=True
