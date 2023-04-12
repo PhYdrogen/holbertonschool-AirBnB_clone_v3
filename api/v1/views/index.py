@@ -12,16 +12,18 @@ from models.state import State
 from models.user import User
 
 Classes = {'cities': City,
-            'amenities': Amenity,
-            'places': Place,
-            'reviews': Review,
-            'states': State,
-            'users': User}
+           'amenities': Amenity,
+           'places': Place,
+           'reviews': Review,
+           'states': State,
+           'users': User}
+
 
 @app_views.route('/status', strict_slashes=False)
 def index():
     status = {'status': 'OK'}
     return jsonify(status)
+
 
 @app_views.route('/stats', strict_slashes=False)
 def count_object():
