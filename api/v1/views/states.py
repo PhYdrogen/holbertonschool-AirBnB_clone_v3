@@ -24,7 +24,7 @@ def state_page(state_id=None):
 
     elif request.method == 'DELETE':
         obj = storage.get(State, state_id)
-        storage.delete(obj)
+        obj.delete()
         storage.save()
         return jsonify({}), 200
 
@@ -37,8 +37,13 @@ def state_page(state_id=None):
 
     elif request.method == 'POST':
         req_dict = request.get_json().items()
-        if not req_dict.has_key('name'):
-            return 'Missing name', 400
+        if not request.is_json:
+            return 'Not a JSON', 400
+
+        for key in req_dict:
+            if key[0] != 'name':
+                return 'Missing name', 400
+
         for req_key, req_value in request.get_json().items():
             for state_obj in storage.all(State).values():
                 state_dict = state_obj.to_dict()
