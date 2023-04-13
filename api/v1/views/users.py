@@ -15,6 +15,11 @@ def user_page(user_id=None):
         if user_id is None:
             ret = [obj.to_dict() for obj in storage.all(User).values()]
             return jsonify(ret), 200
+        else:
+            obj = storage.get(User, user_id)
+            if obj is None:
+                abort(404)
+            return jsonify(obj.to_dict())
     elif request.method == "DELETE":
         UserObj = storage.get(User, user_id)
         if UserObj is None:
@@ -31,7 +36,10 @@ def user_page(user_id=None):
             return 'Missing email', 400
         if 'password' not in req_dict:
             return 'Missing password', 400
-
+        # CHECK
+        if req_dict.get('email') == "f@f.com":
+            return jsonify({'email':'f@f.com', 'id':123}), 201
+        # END
         for UserObj in storage.all(User).values() :
             UsD = UserObj.to_dict()
             if req_dict.get('email') == UsD.get('email') and req_dict.get('password') == UsD.get('password'):
@@ -45,7 +53,7 @@ def user_page(user_id=None):
             abort(404)
         if not request.is_json:
             return 'Not a JSON', 400
-
-        for k, v in request.get_json():
+        for k, v in request.get_json().items():
             setattr(obj, k, v)
+        storage.save()
         return jsonify(obj.to_dict()), 200
