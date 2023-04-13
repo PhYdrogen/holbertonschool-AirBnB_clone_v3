@@ -15,6 +15,11 @@ def user_page(user_id=None):
         if user_id is None:
             ret = [obj.to_dict() for obj in storage.all(User).values()]
             return jsonify(ret), 200
+        else:
+            obj = storage.get(User, user_id)
+            if obj is None:
+                abort(404)
+            return jsonify(obj.to_dict())
     elif request.method == "DELETE":
         UserObj = storage.get(User, user_id)
         if UserObj is None:
