@@ -19,7 +19,7 @@ def app_teardown(err):
 @app.errorhandler(404)
 @app.errorhandler(405)
 def _handle_api_error(ex):
-    return jsonify({"error": "Not found"})
+    return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
