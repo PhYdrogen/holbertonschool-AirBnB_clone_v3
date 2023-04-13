@@ -6,8 +6,10 @@ from models import storage
 from api.v1.views import app_views
 from models.state import State
 
-@app_views.route('/states', strict_slashes=False, methods=['GET','POST'])
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['GET', 'DELETE', 'PUT'])
+
+@app_views.route('/states', strict_slashes=False, methods=['GET', 'POST'])
+@app_views.route('/states/<state_id>', strict_slashes=False,
+                 methods=['GET', 'DELETE', 'PUT'])
 def state_page(state_id=None):
     print(request.method)
     if request.method == 'GET':
@@ -23,13 +25,18 @@ def state_page(state_id=None):
                 abort(404)
 
     elif request.method == 'DELETE':
-        obj = storage.get(State, state_id)
-        obj.delete()
-        storage.save()
-        return jsonify({}), 200
+        try:
+            obj = storage.get(State, state_id)
+            obj.delete()
+            storage.save()
+            return jsonify({}), 200
+        except AttributeError:
+            abort(404)
 
     elif request.method == 'PUT':
         obj = storage.get(State, state_id)
+        if obj is None:
+            abort(404)
         for k, v in request.get_json().items():
             setattr(obj, k, v)
         storage.save()
@@ -49,4 +56,4 @@ def state_page(state_id=None):
                 state_dict = state_obj.to_dict()
                 if req_value == state_dict.get(req_key):
                     return jsonify(state_dict), 201
-        return '{}', 200
+        return '{}', 201
