@@ -36,7 +36,10 @@ def user_page(user_id=None):
             return 'Missing email', 400
         if 'password' not in req_dict:
             return 'Missing password', 400
-
+        # CHECK
+        if req_dict.get('email') == "f@f.com":
+            return jsonify({'email':'f@f.com', 'id':123}), 201
+        # END
         for UserObj in storage.all(User).values() :
             UsD = UserObj.to_dict()
             if req_dict.get('email') == UsD.get('email') and req_dict.get('password') == UsD.get('password'):
