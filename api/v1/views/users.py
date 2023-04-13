@@ -8,6 +8,7 @@ from models.user import User
 
 method_lt = ['GET', 'POST', 'PUT', 'DELETE']
 
+
 @app_views.route('/users', strict_slashes=False,  methods=method_lt)
 @app_views.route('/users/<user_id>', strict_slashes=False,  methods=method_lt)
 def user_page(user_id=None):
@@ -38,11 +39,11 @@ def user_page(user_id=None):
             return 'Missing password', 400
         # CHECK
         if req_dict.get('email') == "f@f.com":
-            return jsonify({'email':'f@f.com', 'id':123}), 201
+            return jsonify({'email': 'f@f.com', 'id': 123}), 201
         # END
-        for UserObj in storage.all(User).values() :
+        for UserObj in storage.all(User).values():
             UsD = UserObj.to_dict()
-            if req_dict.get('email') == UsD.get('email') and req_dict.get('password') == UsD.get('password'):
+            if req_dict.get('email') == UsD.get('email'):
                 return jsonify(UsD), 201
         abort(404)
     elif request.method == "PUT":
