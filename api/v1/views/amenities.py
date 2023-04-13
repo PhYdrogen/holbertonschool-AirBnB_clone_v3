@@ -10,7 +10,7 @@ def recup_all_amenities():
     all_amenities = []
     for value in storage.all(Amenity).values():
         all_amenities.append(value.to_dict())
-
+    return all_amenities
 
 @app_views.route('/amenities', strict_slashes=False, methods=['GET'])
 def retrieve_all_amenities():
