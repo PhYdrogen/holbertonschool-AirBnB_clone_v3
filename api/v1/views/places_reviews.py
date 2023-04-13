@@ -29,25 +29,25 @@ def review_page(place_id=None):
         req_dict = request.get_json()
         if 'name' not in req_dict:
             return 'Missing name', 400
-        for CityObj in storage.all(Review).values() :
-            CiD = CityObj.to_dict()
-            if req_dict.get('name') == CiD.get('name'):
-                return jsonify(CiD), 201
+        for ReviewObj in storage.all(Review).values() :
+            ReD = ReviewObj.to_dict()
+            if req_dict.get('name') == ReD.get('name'):
+                return jsonify(ReD), 201
         abort(404)
 
 @app_views.route('reviews/<review_id>', strict_slashes=False, methods=method_lt)
 def review_get_id(review_id=None):
     """ Retrieves a review object. """
     if request.method == "GET":
-        CityObj = storage.get(Review, review_id)
-        if CityObj is None:
+        ReviewObj = storage.get(Review, review_id)
+        if ReviewObj is None:
             abort(404)
-        return jsonify(CityObj.to_dict()), 200
+        return jsonify(ReviewObj.to_dict()), 200
     elif request.method == "DELETE":
-        CityObj = storage.get(Review, review_id)
-        if CityObj is None:
+        ReviewObj = storage.get(Review, review_id)
+        if ReviewObj is None:
             abort(404)
-        CityObj.delete()
+        ReviewObj.delete()
         storage.save()
         return {}, 200
     elif request.method == "PUT":
