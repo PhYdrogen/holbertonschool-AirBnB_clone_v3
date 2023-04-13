@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" New view for state model """
+""" New view for city model """
 from models import storage
 from flask import jsonify, abort, request
 from models import storage
