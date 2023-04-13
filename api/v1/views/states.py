@@ -6,8 +6,10 @@ from models import storage
 from api.v1.views import app_views
 from models.state import State
 
-@app_views.route('/states', strict_slashes=False, methods=['GET','POST'])
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['GET', 'DELETE', 'PUT'])
+
+@app_views.route('/states', strict_slashes=False, methods=['GET', 'POST'])
+@app_views.route('/states/<state_id>', strict_slashes=False,
+                 methods=['GET', 'DELETE', 'PUT'])
 def state_page(state_id=None):
     print(request.method)
     if request.method == 'GET':
