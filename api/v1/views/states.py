@@ -49,4 +49,4 @@ def state_page(state_id=None):
                 state_dict = state_obj.to_dict()
                 if req_value == state_dict.get(req_key):
                     return jsonify(state_dict), 201
-        return '{}', 200
+        return '{}', 201
