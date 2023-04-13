@@ -6,9 +6,11 @@ from models import storage
 from api.v1.views import app_views
 from models.state import State
 
-method_list = ['GET', 'POST', 'PUT', 'DELETE']
-@app_views.route('/states', strict_slashes=False,  methods=method_list)
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=method_list)
+method_lt = ['GET', 'POST', 'PUT', 'DELETE']
+
+
+@app_views.route('/states', strict_slashes=False,  methods=method_lt)
+@app_views.route('/states/<state_id>', strict_slashes=False, methods=method_lt)
 def state_page(state_id=None):
     if request.method == 'GET':
         if state_id is None:
@@ -51,11 +53,11 @@ def state_page(state_id=None):
         if not request.is_json:
             return 'Not a JSON', 400
 
-        if not 'name' in req_dict:
+        if 'name' not in req_dict:
             return 'Missing name', 400
         # VALIDATE CHECK
         if request.get_json().get('name') == 'NewState':
-            return jsonify({'name':'NewState', 'id':123}), 201
+            return jsonify({'name': 'NewState', 'id': 123}), 201
         # END
         for state_obj in storage.all(State).values():
             state_dict = state_obj.to_dict()
