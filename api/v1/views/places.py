@@ -16,7 +16,7 @@ def place_page(city_id=None):
         ret = [ obj.to_dict() for obj in storage.all(Place).values()]
         id_list = []
         for i in ret:
-            if place_id == i.get('place_id'):
+            if city_id == i.get('city_id'):
                 id_list.append(i)
         if len(id_list) > 0:
             return jsonify(id_list), 200
@@ -29,25 +29,25 @@ def place_page(city_id=None):
         req_dict = request.get_json()
         if 'name' not in req_dict:
             return 'Missing name', 400
-        for CityObj in storage.all(Place).values() :
-            CiD = CityObj.to_dict()
-            if req_dict.get('name') == CiD.get('name'):
-                return jsonify(CiD), 201
+        for PlaceObj in storage.all(Place).values() :
+            PlD = PlaceObj.to_dict()
+            if req_dict.get('name') == PlD.get('name'):
+                return jsonify(PlD), 201
         abort(404)
 
 @app_views.route('/places/<place_id>', strict_slashes=False, methods=method_lt)
 def place_get_id(place_id=None):
     """ Retrieves a Place object. """
     if request.method == "GET":
-        CityObj = storage.get(Place, place_id)
-        if CityObj is None:
+        PlaceObj = storage.get(Place, place_id)
+        if PlaceObj is None:
             abort(404)
-        return jsonify(CityObj.to_dict()), 200
+        return jsonify(PlaceObj.to_dict()), 200
     elif request.method == "DELETE":
-        CityObj = storage.get(Place, place_id)
-        if CityObj is None:
+        PlaceObj = storage.get(Place, place_id)
+        if PlaceObj is None:
             abort(404)
-        CityObj.delete()
+        PlaceObj.delete()
         storage.save()
         return {}, 200
     elif request.method == "PUT":
