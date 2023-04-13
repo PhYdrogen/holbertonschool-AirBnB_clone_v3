@@ -33,6 +33,8 @@ def state_page(state_id=None):
 
     elif request.method == 'PUT':
         obj = storage.get(State, state_id)
+        if obj is None:
+            abort(404)
         for k, v in request.get_json().items():
             setattr(obj, k, v)
         storage.save()
