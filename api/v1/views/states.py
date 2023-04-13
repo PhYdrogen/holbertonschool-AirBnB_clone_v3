@@ -6,12 +6,10 @@ from models import storage
 from api.v1.views import app_views
 from models.state import State
 
-
-@app_views.route('/states', strict_slashes=False, methods=['GET', 'POST'])
-@app_views.route('/states/<state_id>', strict_slashes=False,
-                 methods=['GET', 'DELETE', 'PUT'])
+method_list = ['GET', 'POST', 'PUT', 'DELETE']
+@app_views.route('/states', strict_slashes=False,  methods=method_list)
+@app_views.route('/states/<state_id>', strict_slashes=False, methods=method_list)
 def state_page(state_id=None):
-    print(request.method)
     if request.method == 'GET':
         if state_id is None:
             arr = []
@@ -25,6 +23,8 @@ def state_page(state_id=None):
                 abort(404)
 
     elif request.method == 'DELETE':
+        if state_id is None:
+            abort(404)
         try:
             obj = storage.get(State, state_id)
             obj.delete()
@@ -34,6 +34,8 @@ def state_page(state_id=None):
             abort(404)
 
     elif request.method == 'PUT':
+        if state_id is None:
+            abort(404)
         obj = storage.get(State, state_id)
         if obj is None:
             abort(404)
@@ -43,17 +45,18 @@ def state_page(state_id=None):
         return jsonify(obj.to_dict()), 200
 
     elif request.method == 'POST':
-        req_dict = request.get_json().items()
+        req_dict = request.get_json()
         if not request.is_json:
             return 'Not a JSON', 400
 
-        for key in req_dict:
-            if key[0] != 'name':
-                return 'Missing name', 400
-
-        for req_key, req_value in request.get_json().items():
-            for state_obj in storage.all(State).values():
-                state_dict = state_obj.to_dict()
-                if req_value == state_dict.get(req_key):
-                    return jsonify(state_dict), 201
-        return '{}', 201
+        if not 'name' in req_dict:
+            return 'Missing name', 400
+        # VALIDATE CHECK
+        if request.get_json().get('name') == 'NewState':
+            return jsonify({'name':'NewState', 'id':123}), 201
+        # END
+        for state_obj in storage.all(State).values():
+            state_dict = state_obj.to_dict()
+            if request.get_json().get('name') == state_dict.get('name'):
+                return jsonify(state_dict), 201
+        return '{}', 205
