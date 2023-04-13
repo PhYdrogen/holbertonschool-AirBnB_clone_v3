@@ -23,10 +23,13 @@ def state_page(state_id=None):
                 abort(404)
 
     elif request.method == 'DELETE':
-        obj = storage.get(State, state_id)
-        obj.delete()
-        storage.save()
-        return jsonify({}), 200
+        try:
+            obj = storage.get(State, state_id)
+            obj.delete()
+            storage.save()
+            return jsonify({}), 200
+        except AttributeError:
+            abort(404)
 
     elif request.method == 'PUT':
         obj = storage.get(State, state_id)
