@@ -13,22 +13,16 @@ method_lt = ['GET', 'POST', 'PUT', 'DELETE']
 def place_page(city_id):
     """Retrieves the list of all Place objects of a City"""
     from models.city import City
-    # Check valid city_id
-    doexist = False
-    ci_list = [obj.to_dict() for obj in storage.all(City).values()]
-    for city_dict in ci_list:
-        if city_id == city_dict.get('id'):
-            doexist = True
-    if not doexist:
+
+    if storage.get(City, city_id) is None:
         abort(404)
-    #
     if request.method == "GET":
         ret = [obj.to_dict() for obj in storage.all(Place).values()]
         id_list = []
         for i in ret:
             if city_id == i.get('city_id'):
                 id_list.append(i)
-        return jsonify(id_list), 200
+        return jsonify(ret), 200
     
     elif request.method == "POST":
         if not request.is_json:
@@ -66,6 +60,10 @@ def place_get_id(place_id=None):
         if not request.is_json:
             return 'Not a JSON', 400
 
-        setattr(obj, 'name', request.get_json().get('name'))
+        for k, v in request.get_json().items():
+            if k in ["id", "user_id", "city_id", "created_at", "update_at"]:
+                continue
+            setattr(obj, k, v)
+        storage.save()
         return jsonify(obj.to_dict()), 200
 
