@@ -37,13 +37,12 @@ def review_page(place_id=None):
 
         if req_dict.get('user_id') is None:
             return 'Missing user_id', 400
-        if 'name' not in req_dict:
-            return 'Missing name', 400
+        if 'text' not in req_dict:
+            return 'Missing text', 400
         if storage.get(User, req_dict.get('user_id')) is None:
             abort(404)
         new_place = Place(**req_dict)
-        new_place.city_id = city_id
-        new_place.save()
+        new_place.place_id = place_id
         storage.save()
         return jsonify(new_place.to_dict()), 201
 
@@ -72,7 +71,7 @@ def review_get_id(review_id=None):
             return 'Not a JSON', 400
 
         for k, v in request.get_json().items():
-            if k in ["id", "user_id", "city_id", "created_at", "update_at"]:
+            if k in ["id", "user_id", "place_id", "created_at", "update_at"]:
                 continue
             setattr(obj, k, v)
         storage.save()
