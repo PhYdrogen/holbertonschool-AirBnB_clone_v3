@@ -12,6 +12,16 @@ method_lt = ['GET', 'POST', 'PUT', 'DELETE']
 @app_views.route('/states/<state_id>/cities', strict_slashes=False,  methods=["GET", "POST"])
 def city_page(state_id):
     if request.method == "GET":
+        from models.state import State
+        # Check valid state_id
+        doexist = False
+        st_list = [obj.to_dict() for obj in storage.all(State).values()]
+        for state_dict in st_list:
+            if state_id == state_dict.get('id'):
+                doexist = True
+        if not doexist:
+            abort(404)
+        #
         ret = [ obj.to_dict() for obj in storage.all(City).values()]
         id_list = []
         for i in ret:
