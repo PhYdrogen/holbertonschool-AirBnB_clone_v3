@@ -9,7 +9,8 @@ from models.place import Place
 method_lt = ['GET', 'POST', 'PUT', 'DELETE']
 
 
-@app_views.route('/cities/<city_id>/places', strict_slashes=False, methods=method_lt)
+@app_views.route('/cities/<city_id>/places', strict_slashes=False,
+                 methods=method_lt)
 def place_page(city_id):
     """Retrieves the list of all Place objects of a City"""
     from models.city import City
@@ -26,7 +27,7 @@ def place_page(city_id):
             return jsonify([]), 200
         else:
             return jsonify(id_list), 200
-    
+
     elif request.method == "POST":
         from models.user import User
         if not request.is_json:
@@ -41,6 +42,7 @@ def place_page(city_id):
         new_place.save()
         storage.save()
         return jsonify(new_place.to_dict()), 201
+
 
 @app_views.route('/places/<place_id>', strict_slashes=False, methods=method_lt)
 def place_get_id(place_id=None):
@@ -72,4 +74,3 @@ def place_get_id(place_id=None):
             setattr(obj, k, v)
         storage.save()
         return jsonify(obj.to_dict()), 200
-
