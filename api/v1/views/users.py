@@ -29,8 +29,6 @@ def user_page(user_id=None):
         storage.save()
         return {}, 200
     elif request.method == "POST":
-        if user_id is None:
-            abort(404)
         if not request.is_json:
             return 'Not a JSON', 400
         req_dict = request.get_json()
@@ -38,10 +36,9 @@ def user_page(user_id=None):
             return 'Missing email', 400
         if 'password' not in req_dict:
             return 'Missing password', 400
-        
-        new_user = State(**req_dict)
+
+        new_user = User(**req_dict)
         new_user.user_id = user_id
-        new_user.save()
         storage.save()
         return jsonify(new_user.to_dict()), 201
 
