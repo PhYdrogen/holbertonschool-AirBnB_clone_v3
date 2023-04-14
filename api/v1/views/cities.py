@@ -15,12 +15,10 @@ def city_page(state_id):
         ret = [ obj.to_dict() for obj in storage.all(City).values()]
         id_list = []
         for i in ret:
+            print(i)
             if state_id == i.get('state_id'):
                 id_list.append(i)
-        if len(id_list) > 0:
-            return jsonify(id_list), 200
-        else:
-            abort(404)
+        return jsonify(id_list), 200
     
     elif request.method == "POST":
         if not request.is_json:
