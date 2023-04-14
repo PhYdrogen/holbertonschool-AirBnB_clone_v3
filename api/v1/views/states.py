@@ -55,7 +55,7 @@ def state_page(state_id=None):
 
         if 'name' not in req_dict:
             return 'Missing name', 400
-        
+
         new_state = State(**req_dict)
         new_state.state_id = state_id
         new_state.save()
