@@ -20,9 +20,12 @@ def place_page(city_id):
         ret = [obj.to_dict() for obj in storage.all(Place).values()]
         id_list = []
         for i in ret:
-            if city_id == i.get('city_id'):
+            if city_id == i.get('id'):
                 id_list.append(i)
-        return jsonify(ret), 200
+        if len(id_list) == 0:
+            return jsonify([]), 200
+        else:
+            return jsonify(id_list), 200
     
     elif request.method == "POST":
         from models.user import User
