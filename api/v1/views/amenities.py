@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" New view for amenities model """
 
 from flask import abort, jsonify, request
 from models import storage
