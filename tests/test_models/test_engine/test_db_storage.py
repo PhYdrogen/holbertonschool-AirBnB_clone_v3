@@ -100,8 +100,8 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """Test that get objects of file.json"""
-        # storage = DBStorage()
-        # bm = BaseModel()
-        # bm.save()
-        # self.assertTrue(storage.get(BaseModel, 'pipi_id') is None)
-        # self.assertTrue(storage.get(BaseModel, bm.id) is not None)
+        storage = models.storage
+        state = State(**{'name': 'Paulhan'})
+        state.save()
+        self.assertTrue(storage.get(State, 'pipi_id') is None)
+        self.assertTrue(storage.get(State, state.id) is not None)
