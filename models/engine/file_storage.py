@@ -77,12 +77,12 @@ class FileStorage:
             return None
 
     def count(self, cls=None):
-        """ Returns the number of objects in storage matching the given class. """
+        """ Returns the number of objects in strage matching the given clss """
         Count_state = 0
         if cls is None:
-            return len(self.__objects) # return number of all objects
+            return len(self.__objects)
         else:
             for value in self.__objects.values():
                 if isinstance(value, cls):
                     Count_state += 1
-            return Count_state # return the number of State objects
+            return Count_state
