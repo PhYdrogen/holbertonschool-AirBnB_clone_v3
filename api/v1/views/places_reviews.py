@@ -17,8 +17,9 @@ def review_page(place_id=None):
     if storage.get(Place, place_id) is None:
         abort(404)
     if request.method == "GET":
-        ret = [obj.to_dict() for obj in storage.all(Place).values()]
+        ret = [obj.to_dict() for obj in storage.all(Review).values()]
         id_list = []
+        print(ret)
         for i in ret:
             if place_id == i.get('place_id'):
                 id_list.append(i)
