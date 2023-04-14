@@ -36,7 +36,7 @@ def user_page(user_id=None):
             return 'Missing email', 400
         if 'password' not in req_dict:
             return 'Missing password', 400
-        
+
         new_user = User(**req_dict)
         new_user.user_id = user_id
         storage.save()
