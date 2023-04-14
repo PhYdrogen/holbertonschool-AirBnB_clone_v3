@@ -9,7 +9,8 @@ from models.review import Review
 method_lt = ['GET', 'POST', 'PUT', 'DELETE']
 
 
-@app_views.route('places/<place_id>/reviews', strict_slashes=False, methods=method_lt)
+@app_views.route('places/<place_id>/reviews', strict_slashes=False,
+                 methods=method_lt)
 def review_page(place_id=None):
     """Retrieves the list of all Place objects of a Review"""
     from models.place import Place
@@ -47,7 +48,8 @@ def review_page(place_id=None):
         return jsonify(new_place.to_dict()), 201
 
 
-@app_views.route('reviews/<review_id>', strict_slashes=False, methods=method_lt)
+@app_views.route('reviews/<review_id>', strict_slashes=False,
+                 methods=method_lt)
 def review_get_id(review_id=None):
     if request.method == "GET":
         ReviewObj = storage.get(Review, review_id)
