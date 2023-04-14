@@ -30,13 +30,17 @@ def place_page(city_id):
 
     elif request.method == "POST":
         from models.user import User
+
+        req_dict = request.get_json()
+
+        if req_dict.get('user_id') is None:
+            return 'Missing user_id', 400
         if not request.is_json:
             return 'Not a JSON', 400
-        req_dict = request.get_json()
         if 'name' not in req_dict:
             return 'Missing name', 400
         if storage.get(User, req_dict.get('user_id')) is None:
-            return 'Missing user_id', 400
+            abort(404)
         new_place = Place(**req_dict)
         new_place.city_id = city_id
         new_place.save()
