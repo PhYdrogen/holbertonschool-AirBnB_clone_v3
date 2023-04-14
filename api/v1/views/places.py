@@ -21,7 +21,7 @@ def place_page(city_id):
         ret = [obj.to_dict() for obj in storage.all(Place).values()]
         id_list = []
         for i in ret:
-            if city_id == i.get('id'):
+            if city_id == i.get('city_id'):
                 id_list.append(i)
         if len(id_list) == 0:
             return jsonify([]), 200
