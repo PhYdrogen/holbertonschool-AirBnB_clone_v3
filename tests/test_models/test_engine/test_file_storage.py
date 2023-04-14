@@ -120,8 +120,9 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         old = storage.count()
         city = BaseModel()
+        city.save()
         storage.save()
-        self.assertEqual(old, storage.count())
+        self.assertTrue(old != storage.count())
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get(self):
