@@ -65,4 +65,5 @@ def city_get_id(city_id):
             return 'Not a JSON', 400
 
         setattr(obj, 'name', request.get_json().get('name'))
+        storage.save()
         return jsonify(obj.to_dict()), 200
