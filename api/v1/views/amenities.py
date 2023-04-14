@@ -43,19 +43,16 @@ def delete_one_amenities(amenity_id=None):
         return jsonify({}), 200
     
 
-@app_views.route('/amenities', methods=['POST'])
+@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 def post_amenities():
     request_dict = request.get_json()
-    print(request_dict)
     if not request.is_json:
             return 'Not a JSON', 400
     if 'name' not in request_dict:
             return 'Missing name', 400
-    all_amenity = []
-    for values in storage.all(Amenity).values():
-        all_amenity.append(values.to_dict())
-        if request.get_json().get('name') == all_amenity.get('name'):
-            return jsonify(all_amenity), 201
+    New_amenity = Amenity(**request_dict)
+    New_amenity.save()
+    return jsonify(New_amenity.to_dict()), 201
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'])
@@ -63,7 +60,21 @@ def put_amenity(amenity_id=None):
     request_dict = request.get_json()
     if not request.is_json:
             return 'Not a JSON', 400
+    all_amenity = recup_all_amenities()
+    id_check = []
+    for data in all_amenity:
+        if data["id"] == amenity_id:
+             id_check.append(amenity_id)
+    if len(id_check) == 0:
+         abort(404)
+    retrieve_one_amenities()
+    
+    
+    
     obj = storage.get(Amenity, amenity_id)
+    
+    
+    
     if obj is None:
         abort(404)
     else:
