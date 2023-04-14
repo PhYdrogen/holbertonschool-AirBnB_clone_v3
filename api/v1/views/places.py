@@ -30,7 +30,7 @@ def place_page(city_id):
 
     elif request.method == "POST":
         from models.user import User
-        
+
         if not request.is_json:
             return 'Not a JSON', 400
         req_dict = request.get_json()
