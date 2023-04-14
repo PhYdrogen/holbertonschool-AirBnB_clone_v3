@@ -11,17 +11,17 @@ method_lt = ['GET', 'POST', 'PUT', 'DELETE']
 
 @app_views.route('/states/<state_id>/cities', strict_slashes=False,  methods=["GET", "POST"])
 def city_page(state_id):
+    from models.state import State
+    # Check valid state_id
+    doexist = False
+    st_list = [obj.to_dict() for obj in storage.all(State).values()]
+    for state_dict in st_list:
+        if state_id == state_dict.get('id'):
+            doexist = True
+    if not doexist:
+        abort(404)
+    #
     if request.method == "GET":
-        from models.state import State
-        # Check valid state_id
-        doexist = False
-        st_list = [obj.to_dict() for obj in storage.all(State).values()]
-        for state_dict in st_list:
-            if state_id == state_dict.get('id'):
-                doexist = True
-        if not doexist:
-            abort(404)
-        #
         ret = [ obj.to_dict() for obj in storage.all(City).values()]
         id_list = []
         for i in ret:
@@ -30,8 +30,6 @@ def city_page(state_id):
         return jsonify(id_list), 200
     
     elif request.method == "POST":
-        if state_id is None:
-            abort(404)
         if not request.is_json:
             return 'Not a JSON', 400
         req_dict = request.get_json()
