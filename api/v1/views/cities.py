@@ -9,7 +9,8 @@ from models.city import City
 method_lt = ['GET', 'POST', 'PUT', 'DELETE']
 
 
-@app_views.route('/states/<state_id>/cities', strict_slashes=False,  methods=["GET", "POST"])
+@app_views.route('/states/<state_id>/cities', strict_slashes=False,
+                 methods=["GET", "POST"])
 def city_page(state_id):
     from models.state import State
     # Check valid state_id
@@ -22,13 +23,13 @@ def city_page(state_id):
         abort(404)
     #
     if request.method == "GET":
-        ret = [ obj.to_dict() for obj in storage.all(City).values()]
+        ret = [obj.to_dict() for obj in storage.all(City).values()]
         id_list = []
         for i in ret:
             if state_id == i.get('state_id'):
                 id_list.append(i)
         return jsonify(id_list), 200
-    
+
     elif request.method == "POST":
         if not request.is_json:
             return 'Not a JSON', 400
@@ -40,6 +41,7 @@ def city_page(state_id):
         new_city.save()
         storage.save()
         return jsonify(new_city.to_dict()), 201
+
 
 @app_views.route('/cities/<city_id>', strict_slashes=False,  methods=method_lt)
 def city_get_id(city_id):
